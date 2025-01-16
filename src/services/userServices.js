@@ -12,6 +12,7 @@ class UserService extends Services {
 
   generateToken = (user) => {
     const payload = {
+      _id: user._id, 
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
@@ -34,7 +35,7 @@ class UserService extends Services {
     try {
       const { email, password, isGithub } = user;
       const existUser = await this.getUserByEmail(email);
-      if (existUser) throw new Error("User already exists");
+      if (existUser) throw new Error("El Mail ya se encuentra registrado");
       if (isGithub) {
         const newUser = await this.dao.register(user);
         return newUser;
@@ -55,9 +56,9 @@ class UserService extends Services {
     try {
       const { email, password } = user;
       const userExist = await this.getUserByEmail(email);
-      if (!userExist) throw new Error("User not found");
+      if (!userExist) throw new Error("No se Encuentra el Mail en la base de datos");
       const passValid = isValidPassword(password, userExist);
-      if (!passValid) throw new Error("incorrect credentials");
+      if (!passValid) throw new Error("Error en Usuario o contraseña");
       return this.generateToken(userExist);
     } catch (error) {
       throw error;

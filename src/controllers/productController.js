@@ -1,4 +1,4 @@
-import { prodService } from "../services/product.service.js";
+import { prodService } from "../services/productService.js";
 import Controllers from "./controllerManager.js";
 
 class ProductController extends Controllers {

@@ -1,5 +1,7 @@
 import Controllers from "./controllerManager.js";
 import { userService } from "../services/userServices.js";
+import UserResponseDTO from "../daos/dtos/user/user.res.dto.js";
+
 
 class UserController extends Controllers {
   constructor() {
@@ -28,11 +30,13 @@ class UserController extends Controllers {
 
   privateData = (req, res, next) => {
     try {
-      if (!req.user)
+      if (!req.user) {
         throw new Error("No se puede acceder a los datos del usuario");
-      res.json({
-        user: req.user,
-      });
+      }
+
+      // Usar el DTO para estructurar la respuesta
+      const userDTO = UserResponseDTO(req.user);
+      res.json(userDTO);
     } catch (error) {
       next(error);
     }
